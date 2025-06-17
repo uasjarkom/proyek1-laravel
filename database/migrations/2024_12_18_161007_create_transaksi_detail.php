@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('transaksi_detail', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaksi_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('produk_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('transaksi_id')->constrained('transaksi')->cascadeOnDelete();
+            $table->foreignId('produk_id')->constrained('produk')->cascadeOnDelete();
             $table->integer('quantity');
             $table->decimal('subtotal', 10, 2);
             $table->timestamps();

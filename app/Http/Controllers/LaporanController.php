@@ -6,39 +6,71 @@ use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use App\Exports\LaporanPenjualanExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class LaporanController extends Controller
 {
     public function index(Request $request)
     {
-        // Validasi input
         $request->validate([
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
         ]);
-
+    
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
-
-        // Laporan Penjualan Harian
-        $transaksiHarianQuery = Transaksi::with('detailTransaksi.produk')
-            ->whereDate('created_at', today());
-        $this->applyDateFilter($transaksiHarianQuery, $startDate, $endDate);
-
+    
+        // Harian
+        $transaksiHarianQuery = Transaksi::with('detailTransaksi.produk');
+        if ($startDate && $endDate) {
+            $this->applyDateFilter($transaksiHarianQuery, $startDate, $endDate);
+        } else {
+            $transaksiHarianQuery->whereDate('created_at', today());
+        }
         $transaksiHarian = $transaksiHarianQuery->get();
         $totalPenjualanHarian = $transaksiHarian->sum('total');
-
-        // Laporan Penjualan Bulanan
-        $transaksiBulananQuery = Transaksi::with('detailTransaksi.produk')
-            ->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year);
-        $this->applyDateFilter($transaksiBulananQuery, $startDate, $endDate);
-
+    
+        // Bulanan
+        $transaksiBulananQuery = Transaksi::with('detailTransaksi.produk');
+        if ($startDate && $endDate) {
+            $this->applyDateFilter($transaksiBulananQuery, $startDate, $endDate);
+            $start = Carbon::parse($startDate)->startOfDay();
+            $end = Carbon::parse($endDate)->endOfDay();
+        } else {
+            $start = now()->copy()->startOfMonth();
+            $end = now()->copy()->endOfMonth();
+            $transaksiBulananQuery->whereBetween('created_at', [$start, $end]);
+        }
+    
         $transaksiBulanan = $transaksiBulananQuery->get();
         $totalPenjualanBulanan = $transaksiBulanan->sum('total');
-
-        return view('laporan.index', compact('transaksiHarian', 'totalPenjualanHarian', 'transaksiBulanan', 'totalPenjualanBulanan'));
-    }
+    
+        // Siapkan data untuk chart bulanan
+        $jumlahHari = $end->day;
+        $penjualanHarian = [];
+        $periode = Carbon::parse($start)->copy();
+        
+        while ($periode <= $end) {
+            $penjualanHarian[$periode->format('Y-m-d')] = 0;
+            $periode->addDay();
+        }
+        
+        foreach ($transaksiBulanan as $transaksi) {
+            $key = $transaksi->created_at->format('Y-m-d');
+            if (isset($penjualanHarian[$key])) {
+                $penjualanHarian[$key] += $transaksi->total;
+            }
+        }
+        
+    
+        return view('laporan.index', compact(
+            'transaksiHarian',
+            'totalPenjualanHarian',
+            'transaksiBulanan',
+            'totalPenjualanBulanan',
+            'penjualanHarian'
+        ));
+    }       
 
     private function applyDateFilter($query, $startDate, $endDate)
     {

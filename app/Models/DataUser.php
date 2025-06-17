@@ -16,7 +16,7 @@ class DataUser extends Model
     protected $primaryKey = 'id';
 
     // Kolom-kolom yang dapat diisi
-    protected $fillable = ['name', 'usertype', 'status', 'email', 'password'];
+    protected $fillable = ['name', 'usertype', 'email', 'password'];
 
     // Menonaktifkan timestamp jika tidak digunakan (hapus baris ini jika menggunakan timestamps) gae false true mekan
     public $timestamps = true;

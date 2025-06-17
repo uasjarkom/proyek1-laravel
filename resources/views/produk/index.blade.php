@@ -47,11 +47,13 @@
                                 <td>{{ $row->nama_produk }}</td>
                                 <td>{{ $row->kategori->nama_kategori }}</td>
                                 <td>Rp{{ number_format($row->harga, 0, ',', '.') }}</td>
-                                <td>{{ $row->stok }}</td>
+                                <td class="{{ $row->stok < 5 ? 'bg-danger text-white font-weight-bold' : '' }}">
+                                    {{ $row->stok }}
+                                </td>                                                           
                                 <td>
                                     <div class="d-flex justify-content-center">
                                         <a href="{{ route('produk.edit', $row->id) }}" class="btn btn-warning btn-sm mr-2">
-                                            <i class="fas fa-edit"></i> Edit
+                                            <i class="fas fa-edit"></i> Ubah
                                         </a>
                                         <form action="{{ route('produk.delete', $row->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?');">
                                             @csrf

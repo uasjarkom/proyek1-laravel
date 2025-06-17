@@ -77,47 +77,63 @@
     </div>
 
     <!-- Laporan Penjualan Bulanan -->
-    <div class="card">
+    <div class="card mt-4">
         <div class="card-header bg-success text-white">
             <h4>Laporan Penjualan Bulanan</h4>
         </div>
         <div class="card-body">
             <h3>Total Penjualan Bulan Ini: Rp{{ number_format($totalPenjualanBulanan, 0, ',', '.') }}</h3>
 
-            <!-- Membuat tabel responsif -->
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>No.Struk</th>
-                            <th>Nama Produk</th>
-                            <th>Jumlah</th>
-                            <th>Tanggal</th>
-                            <th>Total Penjualan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($transaksiBulanan as $transaksi)
-                            <tr>
-                                <td>{{ $transaksi->invoice_number }}</td>
-                                <td>
-                                    @foreach ($transaksi->detailTransaksi as $detail)
-                                        {{ $detail->produk ? $detail->produk->nama_produk : 'Produk tidak ditemukan' }}<br>
-                                    @endforeach
-                                </td>
-                                <td>
-                                    @foreach ($transaksi->detailTransaksi as $detail)
-                                        {{ $detail->quantity }}<br>
-                                    @endforeach
-                                </td>
-                                <td>{{ $transaksi->created_at->format('d-m-Y H:i:s') }}</td>
-                                <td>Rp{{ number_format($transaksi->total, 0, ',', '.') }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+            <canvas id="chartPenjualanBulanan" height="100"></canvas>
         </div>
     </div>
 </div>
 @endsection
+
+@section('scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('chartPenjualanBulanan').getContext('2d');
+
+        const labels = {!! json_encode(array_keys($penjualanHarian)) !!};
+        const data = {!! json_encode(array_values($penjualanHarian)) !!};
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Total Penjualan (Rp)',
+                    data: data,
+                    borderColor: 'rgba(40, 167, 69, 1)',
+                    backgroundColor: 'rgba(40, 167, 69, 0.2)',
+                    tension: 0,               // tidak melengkung (lurus)
+                    fill: false,              // tidak mewarnai area bawah
+                    pointRadius: 4,           // titik terlihat
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Tanggal'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Total Penjualan (Rp)'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+

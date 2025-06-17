@@ -27,7 +27,6 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|unique:users',
             'usertype' => 'required',
-            'status' => 'required',
             'email' => 'required|unique:users',
             'password' => 'required'
         ], $message);
@@ -36,7 +35,6 @@ class UserController extends Controller
 
         $data->name = $request->name;
         $data->usertype = $request->usertype;
-        $data->status = $request->status;
         $data->email = $request->email;
         $data->password = bcrypt($request->password);
         $data->save(); // mewakili insert
@@ -72,7 +70,6 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'usertype' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id, // Ubah ke 'users'
             'password' => 'nullable|string|min:6', // Password tetap validasi sebagai opsional
         ]);
@@ -83,7 +80,6 @@ class UserController extends Controller
         $user->update([
             'name' => $request->name,
             'usertype' => $request->usertype,
-            'status' => $request->status,
             'email' => $request->email,
             'password' => $request->password ??  $user->password, // Hanya update password jika diisi
         ]);

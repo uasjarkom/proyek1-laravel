@@ -44,12 +44,12 @@
                                 <td>
                                     <div class="d-flex justify-content-center">
                                         <a href="{{ route('kategori.edit', $row->id) }}" class="btn btn-warning btn-sm mr-2">
-                                            <i class="fas fa-edit"></i> Edit
+                                            <i class="fas fa-edit"></i> Ubah
                                         </a>
                                         <form action="{{ route('kategori.delete', $row->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash"></i> Delete
+                                                <i class="fas fa-trash"></i> Hapus
                                             </button>
                                         </form>
                                     </div>

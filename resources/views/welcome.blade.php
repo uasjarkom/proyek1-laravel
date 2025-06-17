@@ -96,7 +96,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#"><i class="bi bi-shop me-2"></i>Berliana FC & ATK</a>
+            <a class="navbar-brand" href="#"><i class="bi bi-shop me-2"></i>Berlin FC & ATK</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -106,7 +106,7 @@
                     <li class="nav-item"><a class="nav-link" href="#features">Fitur</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Kontak</a></li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">Login</a>
+                        <a class="nav-link" href="{{ route('login') }}">Masuk</a>
                     </li>
                 </ul>
             </div>
@@ -116,7 +116,7 @@
     <!-- Header -->
     <header class="bg-light text-center py-5">
         <div class="container">
-            <h1 class="hero-title">Selamat Datang di <span style="color: #ffc107;">Berliana FC & ATK</span></h1>
+            <h1 class="hero-title">Selamat Datang di <span style="color: #ffc107;">Berlin FC & ATK</span></h1>
             <p class="hero-subtitle">Sistem pencatatan modern untuk mengelola barang, laporan penjualan, user, dan transaksi dengan efisien.</p>
         </div>
     </header>
@@ -157,7 +157,7 @@
                             <div class="mb-3">
                                 <i class="bi bi-person-circle text-primary" style="font-size: 2rem;"></i>
                             </div>
-                            <h5 class="card-title">Manajemen User</h5>
+                            <h5 class="card-title">Kelola User</h5>
                             <p class="card-text">Atur user untuk membedakan hak akses antara admin dan karyawan.</p>
                         </div>
                     </div>

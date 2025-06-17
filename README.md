@@ -1,4 +1,4 @@
-<p> Nama Kelompok : Azza Syarifah Lubnah, Berliana Fatima Zahwa, Dimas Seto Nugroho, Sendy Maulana</p>
+<p> Nama Kelompok : Ardita Rif'atul Umami, Berliana Fatima Zahwa, Farid Restu Febriansyah, Najwa Abigail Putri Andrian, Regiza Rahmadika Risandi</p>
 <p>Manual Book : https://docs.google.com/document/d/1B0tNo9gEU1dOgelYgQ_RvnxBNkgwDjbH/edit?usp=sharing&ouid=103064982958247077823&rtpof=true&sd=true</p>
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 

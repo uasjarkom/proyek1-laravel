@@ -5,6 +5,26 @@
 <div class="container py-5">
     <h1 class="mb-4">Kasir</h1>
 
+    {{-- Notifikasi sukses dan error --}}
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <script>
+            window.onload = function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: '{{ session('error') }}',
+                    confirmButtonColor: '#d33'
+                });
+            };
+        </script>
+    @endif
+
     {{-- Form Tambah ke Keranjang --}}
     <div class="card mb-4">
         <div class="card-header bg-primary text-white">
@@ -95,4 +115,3 @@
     @endif
 </div>
 @endsection
-

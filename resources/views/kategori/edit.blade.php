@@ -23,7 +23,7 @@
                         </div>
                         <div class="d-flex justify-content-between mt-4">
                             <button type="submit" class="btn btn-primary btn-sm">
-                                <i class="fas fa-save"></i> Update
+                                <i class="fas fa-save"></i> Perbarui
                             </button>
                             <a href="{{ url('kategori') }}" class="btn btn-secondary btn-sm">
                                 <i class="fas fa-arrow-left"></i> Kembali

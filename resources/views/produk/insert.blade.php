@@ -15,11 +15,8 @@
                         @csrf
                         <div class="form-group">
                             <label for="id">Kode Barang</label>
-                            <input type="text" id="id" name="id" class="form-control" placeholder="Masukkan kode barang">
-                            @error('id')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
+                            <input type="text" id="id" name="id" class="form-control" value="(Otomatis)" readonly>
+                        </div>                        
                         <div class="form-group">
                             <label for="nama_produk">Nama Produk</label>
                             <input type="text" id="nama_produk" name="nama_produk" class="form-control" placeholder="Masukkan nama produk">

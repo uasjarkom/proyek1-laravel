@@ -10,6 +10,8 @@ class Produk extends Model
     use HasFactory;
     protected $table = 'produk';
     protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $fillable = ['id', 'nama_produk', 'harga', 'stok'];
 
     public function kategori(){

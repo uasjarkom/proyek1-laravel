@@ -108,7 +108,7 @@
 
     <!-- Button Print dan Kembali -->
     <div style="text-align: center;">
-        <button class="btn" onclick="window.print()">Print Struk</button>
+        <button class="btn" onclick="window.print()">Cetak Struk</button>
         <a href="{{ route('kasir.index') }}" class="btn btn-danger">Kembali ke Kasir</a>
     </div>
 

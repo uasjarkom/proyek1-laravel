@@ -8,6 +8,8 @@ use App\Http\Controllers\KasirController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LaporanKeuanganController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -52,8 +54,14 @@ Route::get('/dashboard', function () {
 
 Route::get('/laporan/export-excel', [LaporanController::class, 'exportExcel'])->name('laporan.export-excel');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
+
 
 Route::middleware(['auth','admin'])->group(function () {
+
     // Produk Routes
     Route::controller(ProdukController::class)->prefix('produk')->group(function () {
         Route::get('', 'index')->name('produk');
@@ -83,8 +91,22 @@ Route::middleware(['auth','admin'])->group(function () {
         Route::delete('{id}', 'destroy')->name('tables.destroy');
     });
 
-    // Laporan Routes
+    // Laporan Routes (utama)
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+
+    // Laporan Keuangan
+    Route::prefix('laporan')->group(function () {
+        Route::prefix('keuangan')->group(function () {
+            Route::get('/', [LaporanKeuanganController::class, 'index'])->name('laporan.keuangan');
+            Route::get('/tambah', [LaporanKeuanganController::class, 'create'])->name('laporan.keuangan.create');
+            Route::post('/simpan', [LaporanKeuanganController::class, 'store'])->name('laporan.keuangan.store');
+            Route::get('/laporan/keuangan/edit/{id}', [LaporanKeuanganController::class, 'edit'])->name('laporan.keuangan.edit');
+            Route::put('/laporan/keuangan/update/{id}', [LaporanKeuanganController::class, 'update'])->name('laporan.keuangan.update');
+            Route::delete('/laporan/keuangan/delete/{id}', [LaporanKeuanganController::class, 'destroy'])->name('laporan.keuangan.destroy');
+        });
+    });
+    
+
 });
 
 
@@ -106,3 +128,4 @@ Route::middleware(['auth','kasir'])->group(function () {
         Route::get('struk/{id}', 'receipt')->name('kasir.receipt');  // Menampilkan struk transaksi
     });
 });
+

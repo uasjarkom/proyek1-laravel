@@ -23,6 +23,8 @@
     <!-- Custom styles for this page -->
     <link href="{{asset('template/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
     <style>
         /* Fixed Sidebar */
         #accordionSidebar {
@@ -63,77 +65,90 @@
 
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion sticky-left" id="accordionSidebar">
-
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard')}}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard') }}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Berliana FC&ATK</div>
+                <div class="sidebar-brand-text mx-3">Berlin FC&ATK</div>
             </a>
 
-            <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
+            <!-- Dashboard (akses semua user) -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('dashboard')}}">
+                <a class="nav-link" href="{{ route('dashboard') }}">
                     <i class="fas fa-fw fa-home"></i>
-                    <span>Dashboard</span></a>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-            
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-clipboard-list"></i>
-                    <span>Kelola Produk</span>
+                    <span>Dashboard</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ route('produk')}}">Barang</a>
-                        <a class="collapse-item" href="{{ route('kategori')}}">Kategori</a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <!-- Menu untuk Admin -->
+            @if(Auth::user()->usertype === 'admin')
+                <!-- Kelola Produk -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-clipboard-list"></i>
+                        <span>Kelola Produk</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="{{ route('produk') }}">Barang</a>
+                            <a class="collapse-item" href="{{ route('kategori') }}">Kategori</a>
+                        </div>
                     </div>
-                </div>
-            </li>
+                </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-            
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('tables')}}">
-                    <i class="fas fa-fw fa-user-cog"></i>
-                    <span>Manajemen User</span></a>
-            </li>
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-            
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('kasir.index')}}">
-                    <i class="fas fa-fw fa-desktop"></i>
-                    <span>Penjualan</span></a>
-            </li>
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-            
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('laporan.index')}}">
-                    <i class="fas fa-fw fa-chart-bar"></i>
-                    <span>Laporan</span></a>
-            </li>
+                <hr class="sidebar-divider">
 
-            <!-- Divider -->
+                <!-- Kelola Pengguna -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('tables') }}">
+                        <i class="fas fa-fw fa-user-cog"></i>
+                        <span>Kelola Pengguna</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+
+                <!-- Laporan -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLaporan"
+                        aria-expanded="true" aria-controls="collapseLaporan">
+                        <i class="fas fa-fw fa-chart-bar"></i>
+                        <span>Laporan</span>
+                    </a>
+                    <div id="collapseLaporan" class="collapse" aria-labelledby="headingLaporan" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="{{ route('laporan.index') }}">Laporan Penjualan</a>
+                            <a class="collapse-item" href="{{ route('laporan.keuangan') }}">Laporan Keuangan</a>
+                        </div>
+                    </div>
+                </li>
+
+                <hr class="sidebar-divider">
+            @endif
+
+            <!-- Menu untuk Kasir -->
+            @if(Auth::user()->usertype === 'kasir')
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('kasir.index') }}">
+                        <i class="fas fa-fw fa-desktop"></i>
+                        <span>Penjualan</span>
+                    </a>
+                </li>
+
+                <hr class="sidebar-divider">
+            @endif
+
             <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
         </ul>
-        <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -165,23 +180,29 @@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name}}</span>
-                                <img class="img-profile rounded-circle"
-                                    src="template/img/download(5).jpg">
-                            </a>
+                                <div class="d-none d-lg-flex flex-column align-items-end mr-2">
+                                    <span class="text-gray-600 small">{{ Auth::user()->name }}</span>
+                                    <span class="text-primary small">({{ Auth::user()->usertype }})</span>
+                                </div>
+                                <img class="img-profile rounded-circle" width="40" height="40"
+                                    style="object-fit: cover;"
+                                    src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('template/img/download5.jpg') }}">            
+                            </a>                        
                             <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-
-                                <a class="dropdown-item" href="" data-toggle="modal" data-target="#logoutModal">
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profil Saya
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
                             </div>
-                        </li>
-
+                        </li>                                               
                     </ul>
 
                 </nav>
@@ -201,7 +222,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Berliana FC&ATK 2024</span>
+                        <span>Copyright &copy; Berlin FC&ATK 2024</span>
                     </div>
                 </div>
             </footer>
@@ -224,7 +245,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?   </h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Bersedia untuk keluar?   </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -234,7 +255,7 @@
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="btn btn-primary">Logout</button>
+                        <button type="submit" class="btn btn-primary">Keluar</button>
                     </form>
                 </div>
             </div>
@@ -257,6 +278,14 @@
 
     <!-- Page level custom scripts -->
     <script src="{{ asset('template/js/demo/datatables-demo.js')}}"></script>
+
+    <!-- Popup Notifikasi  -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Charts  -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    
+
+    @yield('scripts')
 
 </body>
 
